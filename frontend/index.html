@@ -165,6 +165,31 @@
                 transform: rotate(360deg);
             }
         }
+
+        .url-qr-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        .url-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .qr-container {
+            flex: 0 0 auto;
+            text-align: center;
+        }
+
+        #qrCode {
+            max-width: 150px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 
@@ -186,13 +211,24 @@
             <div class="loader-spinner"></div>
         </div>
 
-        <div id="result" class="result">
-            <p>Your shortened URL:</p>
-            <a id="shortUrl" href="#" target="_blank"></a>
-            <div>
-                <button id="copyBtn" class="copy-btn">Copy to clipboard</button>
+        <div class="result-container">
+            <div id="result" class="result">
+                <p>Your shortened URL:</p>
+                <div class="url-qr-container">
+                    <div class="url-container">
+                        <a id="shortUrl" href="#" target="_blank"></a>
+                        <div>
+                            <button id="copyBtn" class="copy-btn">Copy to clipboard</button>
+                        </div>
+                    </div>
+                    <div class="qr-container">
+                        <img id="qrCode" src="" alt="QR Code" style="display: none;">
+                    </div>
+                </div>
             </div>
         </div>
+
+
     </div>
 
     <script>
@@ -200,6 +236,7 @@
             const originalUrl = document.getElementById('originalUrl').value;
             const loader = document.getElementById('loader');
             const result = document.getElementById('result');
+            const qrCodeImg = document.getElementById('qrCode');
 
             if (!originalUrl) {
                 alert('Please enter a valid URL');
@@ -209,6 +246,7 @@
             // Show loader, hide result
             loader.style.display = 'block';
             result.style.display = 'none';
+            qrCodeImg.style.display = 'none';
 
             try {
                 // Modificar a URL para usar o caminho relativo
@@ -232,6 +270,12 @@
 
                     shortUrlElement.href = fullShortUrl;
                     shortUrlElement.textContent = fullShortUrl;
+
+                    // Gerar e exibir o QR code
+                    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(fullShortUrl)}`;
+                    qrCodeImg.src = qrCodeUrl;
+                    qrCodeImg.style.display = 'block';
+
                     result.style.display = 'block';
                 } else {
                     alert('Error creating short URL');
