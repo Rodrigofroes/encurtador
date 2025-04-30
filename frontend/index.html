@@ -166,12 +166,13 @@
             }
         }
 
-        .url-qr-container {
+        .result-container {
             display: flex;
-            flex-direction: row;
             align-items: center;
             justify-content: space-between;
-            margin-top: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         .url-container {
@@ -214,16 +215,16 @@
         <div class="result-container">
             <div id="result" class="result">
                 <p>Your shortened URL:</p>
-                <div class="url-qr-container">
+                <div>
                     <div class="url-container">
                         <a id="shortUrl" href="#" target="_blank"></a>
                         <div>
                             <button id="copyBtn" class="copy-btn">Copy to clipboard</button>
                         </div>
                     </div>
-                    <div class="qr-container">
-                        <img id="qrCode" src="" alt="QR Code" style="display: none;">
-                    </div>
+                </div>
+                <div class="qr-container">
+                    <img id="qrCode" src="" alt="QR Code" style="display: none;">
                 </div>
             </div>
         </div>
