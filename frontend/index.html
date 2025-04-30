@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Shortener</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3679009113644133"
+        crossorigin="anonymous"></script>
     <style>
         * {
             margin: 0;
@@ -157,6 +160,17 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* Adicionar estilo para o container de anúncios */
+        .ad-container {
+            margin-top: 30px;
+            text-align: center;
+            overflow: hidden;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 </head>
 
@@ -185,6 +199,16 @@
                 <button id="copyBtn" class="copy-btn">Copy to clipboard</button>
             </div>
         </div>
+    </div>
+
+    <!-- Container para anúncios -->
+    <div class="ad-container">
+        <!-- shortener -->
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3679009113644133"
+            data-ad-slot="3206077790" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
     </div>
 
     <script>
