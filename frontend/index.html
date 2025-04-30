@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        input[type="url"] {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        input[type="url"]:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .btn-container {
+            text-align: center;
+        }
+
+        button {
+            padding: 14px 30px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-weight: 500;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f1f8ff;
+            border-left: 4px solid #3498db;
+            display: none;
+        }
+
+        .result p {
+            margin-bottom: 10px;
+            color: #2c3e50;
+        }
+
+        .result a {
+            color: #3498db;
+            text-decoration: none;
+            word-break: break-all;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .result a:hover {
+            color: #2980b9;
+            text-decoration: underline;
+        }
+
+        .copy-btn {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 8px 16px;
+            background-color: #e0e0e0;
+            color: #333;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .copy-btn:hover {
+            background-color: #d0d0d0;
+        }
+
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loader-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>URL Shortener</h1>
+
+        <div class="form-group">
+            <label for="originalUrl">Enter URL to shorten:</label>
+            <input type="url" id="originalUrl" placeholder="https://example.com" required pattern="https?://.+"
+                title="Please enter a valid URL starting with http:// or https://">
+        </div>
+
+        <div class="btn-container">
+            <button id="shortenBtn">Shorten URL</button>
+        </div>
+
+        <div id="loader" class="loader">
+            <div class="loader-spinner"></div>
+        </div>
+
+        <div id="result" class="result">
+            <p>Your shortened URL:</p>
+            <a id="shortUrl" href="#" target="_blank"></a>
+            <div>
+                <button id="copyBtn" class="copy-btn">Copy to clipboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('shortenBtn').addEventListener('click', async () => {
+            const originalUrl = document.getElementById('originalUrl').value;
+            const loader = document.getElementById('loader');
+            const result = document.getElementById('result');
+
+            if (!originalUrl) {
+                alert('Please enter a valid URL');
+                return;
+            }
+
+            // Show loader, hide result
+            loader.style.display = 'block';
+            result.style.display = 'none';
+
+            try {
+                // Modificar a URL para usar o caminho relativo
+                const response = await fetch('/create-short-url', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ originalUrl })
+                });
+
+                const data = await response.json();
+
+                // Hide loader
+                loader.style.display = 'none';
+
+                if (data.shortUrl) {
+                    const shortUrlElement = document.getElementById('shortUrl');
+                    // Usar o caminho relativo ou window.location.origin para construir a URL completa
+                    const fullShortUrl = `${window.location.origin}/${data.shortUrl}`;
+
+                    shortUrlElement.href = fullShortUrl;
+                    shortUrlElement.textContent = fullShortUrl;
+                    result.style.display = 'block';
+                } else {
+                    alert('Error creating short URL');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                loader.style.display = 'none';
+                alert('Error creating short URL');
+            }
+        });
+
+        document.getElementById('copyBtn').addEventListener('click', () => {
+            const shortUrl = document.getElementById('shortUrl').textContent;
+            navigator.clipboard.writeText(shortUrl)
+                .then(() => {
+                    const copyBtn = document.getElementById('copyBtn');
+                    copyBtn.textContent = 'Copied!';
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy to clipboard';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Failed to copy: ', err);
+                });
+        });
+    </script>
+</body>
+
+</html>
