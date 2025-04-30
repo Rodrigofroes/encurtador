@@ -104,7 +104,42 @@
             background-color: #f1f8ff;
             border-left: 4px solid #3498db;
             display: none;
-            flex: 1;
+        }
+
+        .result-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .url-section {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .qr-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            width: 100%;
+        }
+
+        .qr-section p {
+            margin-bottom: 15px;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        #qrCode {
+            max-width: 180px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            background-color: white;
         }
 
         .result p {
@@ -215,18 +250,20 @@
 
         <div class="result-container">
             <div id="result" class="result">
-                <p>Your shortened URL:</p>
-                <div>
-                    <div class="url-container">
+                <div class="result-content">
+                    <div class="url-section">
+                        <p>Your shortened URL:</p>
                         <a id="shortUrl" href="#" target="_blank"></a>
                         <div>
                             <button id="copyBtn" class="copy-btn">Copy to clipboard</button>
                         </div>
                     </div>
+
+                    <div class="qr-section">
+                        <p>Scan this QR code to access the link:</p>
+                        <img id="qrCode" src="" alt="QR Code">
+                    </div>
                 </div>
-            </div>
-            <div class="qr-container">
-                <img id="qrCode" src="" alt="QR Code" style="display: none;">
             </div>
         </div>
 
@@ -248,7 +285,6 @@
             // Show loader, hide result
             loader.style.display = 'block';
             result.style.display = 'none';
-            qrCodeImg.style.display = 'none';
 
             try {
                 // Modificar a URL para usar o caminho relativo
@@ -274,10 +310,10 @@
                     shortUrlElement.textContent = fullShortUrl;
 
                     // Gerar e exibir o QR code
-                    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(fullShortUrl)}`;
+                    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(fullShortUrl)}`;
                     qrCodeImg.src = qrCodeUrl;
-                    qrCodeImg.style.display = 'block';
 
+                    // Mostrar o resultado
                     result.style.display = 'block';
                 } else {
                     alert('Error creating short URL');
