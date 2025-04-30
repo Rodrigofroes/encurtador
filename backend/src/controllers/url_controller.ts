@@ -26,7 +26,7 @@ export default class UrlController {
         if (url) {
             res.redirect(url.originalUrl);
         } else {
-            res.status(404).sendFile(path.join(__dirname, '../public/notfound.html'));
+            res.status(404).redirect(path.join(__dirname, '../public/notfound.html'));
         }
     }
 }
