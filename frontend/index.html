@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URL Shortener</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap">
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3679009113644133"
-        crossorigin="anonymous"></script>
     <style>
         * {
             margin: 0;
@@ -21,16 +18,21 @@
             background-color: #f5f7fa;
             color: #333;
             line-height: 1.6;
-            padding: 40px 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
         .container {
+            width: 100%;
             max-width: 700px;
-            margin: 0 auto;
             background-color: white;
             border-radius: 12px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
             padding: 40px;
+            /* Não é necessário adicionar display: flex aqui para manter o layout interno */
         }
 
         h1 {
@@ -68,6 +70,9 @@
 
         .btn-container {
             text-align: center;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
         }
 
         button {
@@ -160,21 +165,10 @@
                 transform: rotate(360deg);
             }
         }
-
-        /* Adicionar estilo para o container de anúncios */
-        .ad-container {
-            margin-top: 30px;
-            text-align: center;
-            overflow: hidden;
-            width: 100%;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
     </style>
 </head>
 
-<body>
+<body id="body" onload="document.getElementById('originalUrl').focus()">
     <div class="container">
         <h1>URL Shortener</h1>
 
@@ -199,16 +193,6 @@
                 <button id="copyBtn" class="copy-btn">Copy to clipboard</button>
             </div>
         </div>
-    </div>
-
-    <!-- Container para anúncios -->
-    <div class="ad-container">
-        <!-- shortener -->
-        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3679009113644133"
-            data-ad-slot="3206077790" data-ad-format="auto" data-full-width-responsive="true"></ins>
-        <script>
-            (adsbygoogle = window.adsbygoogle || []).push({});
-        </script>
     </div>
 
     <script>
